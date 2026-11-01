@@ -1,0 +1,42 @@
+# Local environments, generated runs and build products
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.build_tools/
+.ros_build/
+.ros_install/
+.ros_log/
+build/
+dist/
+runtime/
+models_initial/
+models_v*/
+# Collected future data is private by default; submitted measurements are explicit.
+data/*.csv
+!data/20261031_163058_0.csv
+!data/20261031_163058_1.csv
+!data/20261031_163058_2.csv
+!data/20261031_163058_3.csv
+!data/20261031_163058_4.csv
+!data/baseline_1.csv
+!data/baseline_2.csv
+!data/expert_wide.csv
+
+# Credentials, local configuration and editor files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+*.log
+*.mp4
+*.docx
+*.pdf

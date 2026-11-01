@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Safety Navigation — 実測ログ再生</title>
+<style>
+:root{color-scheme:light dark;font:16px system-ui,sans-serif;background:#101b2d;color:#edf4fc}body{margin:0;padding:24px;max-width:1160px;margin:auto}h1{font-size:24px;margin:0 0 8px;font-weight:600}.note{color:#b6cbe0;margin-bottom:16px}.controls{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:16px 0}button,select{font:inherit;padding:8px 12px;background:#233954;color:inherit;border:1px solid #627891;border-radius:6px}input{flex:1;min-width:140px}.layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(260px,1fr);gap:24px}canvas{width:100%;height:auto;background:#17283e;border-radius:8px}.values{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:8px 0}.values span{display:block;color:#b6cbe0;font-size:14px}.values output{font-variant-numeric:tabular-nums;display:block;font-size:22px;margin-top:6px}.state{padding:12px;background:#253f55;border-left:4px solid #6be0b8}.state.active{background:#584225;border-color:#ffc46b}p{line-height:1.65}footer{font-size:14px;color:#b6cbe0;margin-top:16px}@media(max-width:760px){.layout{grid-template-columns:1fr}body{padding:16px}.values{grid-template-columns:1fr 1fr}}
+</style>
+<h1>AI Safety Navigation</h1><div class="note">実測ROSログの2D再生・Gazeboの画面録画とは別の補助表示</div>
+<div class="controls"><button id="play" type="button">再生</button><label>再生速度 <select id="speed"><option value="1">1倍</option><option value="2">2倍</option></select></label><input id="seek" type="range" min="0" max="1000" value="0" aria-label="再生位置"><output id="time"></output></div>
+<div class="layout"><canvas id="map" width="760" height="650" aria-label="実測の移動軌跡、障害物、目標位置"></canvas><div><div id="mode"></div><div class="values"><div><span>目標まで</span><output id="distance"></output></div><div><span>前方のLiDAR距離</span><output id="front"></output></div><div><span>制御器の要求 v</span><output id="request-v"></output></div><div><span>シールド出力 v</span><output id="output-v"></output></div><div><span>制御器の要求 ω</span><output id="request-w"></output></div><div><span>シールド出力 ω</span><output id="output-w"></output></div><div><span>推論・規則計算</span><output id="inference"></output></div></div><div id="state" class="state" role="status"></div><p>青線：実測オドメトリの軌跡<br>橙色：固定障害物<br>緑色：目標・到達半径0.22m<br>三角：車体の向き</p><p>距離はLiDAR原点からの測距です。車体表面からの隙間とは異なります。</p></div></div>
+<footer id="result"></footer>
+<script>
+const data=__REPLAY_DATA__;
+const frames=data.frames, duration=frames.at(-1).t, canvas=document.getElementById('map'),ctx=canvas.getContext('2d');
+const el=id=>document.getElementById(id);let playing=false,t=0,last=0;
+const xs=[0,data.goal[0],...frames.map(f=>f.p[0]),...data.obstacles.flatMap(o=>[o[0]-o[2]/2,o[0]+o[2]/2])];
+const ys=[0,data.goal[1],...frames.map(f=>f.p[1]),...data.obstacles.flatMap(o=>[o[1]-o[3]/2,o[1]+o[3]/2])];
+const bounds=[Math.min(...xs)-.8,Math.max(...xs)+.8,Math.min(...ys)-.8,Math.max(...ys)+.8];
+const scale=Math.min((canvas.width-80)/(bounds[1]-bounds[0]),(canvas.height-80)/(bounds[3]-bounds[2]));
+const px=x=>40+(x-bounds[0])*scale,py=y=>canvas.height-40-(y-bounds[2])*scale;
+const labels={clear:'制限なし',slow:'接近により減速',emergency_stop:'近接停止：前進・旋回を停止',stale_or_invalid_data:'データの鮮度・有効性により停止',invalid_command:'異常な指令を停止',watchdog_only:'AIのみ：データ監視は有効'};
+const num=(v,unit)=>Number.isFinite(v)?v.toFixed(3)+' '+unit:'—';
+el('mode').textContent='条件：'+data.mode;el('result').textContent='実測結果：'+data.status+' / 再生時間はシミュレーション時刻です。';
+function indexAt(time){let lo=0,hi=frames.length-1;while(lo<hi){const mid=Math.ceil((lo+hi)/2);if(frames[mid].t<=time)lo=mid;else hi=mid-1;}return lo;}
+function draw(){const i=indexAt(t),f=frames[i];ctx.clearRect(0,0,canvas.width,canvas.height);ctx.lineWidth=1;ctx.strokeStyle='#3a5067';ctx.fillStyle='#c0d3e6';ctx.font='14px system-ui';
+for(let x=Math.ceil(bounds[0]);x<=bounds[1];x++){ctx.beginPath();ctx.moveTo(px(x),py(bounds[2]));ctx.lineTo(px(x),py(bounds[3]));ctx.stroke();ctx.fillText(x+'m',px(x)-8,canvas.height-15);}
+for(let y=Math.ceil(bounds[2]);y<=bounds[3];y++){ctx.beginPath();ctx.moveTo(px(bounds[0]),py(y));ctx.lineTo(px(bounds[1]),py(y));ctx.stroke();ctx.fillText(y+'m',5,py(y)+5);}
+ctx.fillStyle='#d48b44';for(const [x,y,w,h] of data.obstacles){ctx.fillRect(px(x-w/2),py(y+h/2),w*scale,h*scale);}
+ctx.strokeStyle='#6be0b8';ctx.lineWidth=3;ctx.beginPath();ctx.arc(px(data.goal[0]),py(data.goal[1]),.22*scale,0,2*Math.PI);ctx.stroke();
+ctx.strokeStyle='#75b9ff';ctx.lineWidth=3;ctx.beginPath();frames.slice(0,i+1).forEach((p,j)=>j?ctx.lineTo(px(p.p[0]),py(p.p[1])):ctx.moveTo(px(p.p[0]),py(p.p[1])));ctx.stroke();
+ctx.save();ctx.translate(px(f.p[0]),py(f.p[1]));ctx.rotate(-f.p[2]);ctx.fillStyle=f.intervened?'#ffc46b':'#75b9ff';ctx.fillRect(-.25*scale,-.175*scale,.5*scale,.35*scale);ctx.fillStyle='#102137';ctx.beginPath();ctx.moveTo(.22*scale,0);ctx.lineTo(-.08*scale,-.1*scale);ctx.lineTo(-.08*scale,.1*scale);ctx.closePath();ctx.fill();ctx.restore();
+el('time').textContent=t.toFixed(1)+' / '+duration.toFixed(1)+' s';el('seek').value=Math.round(t/duration*1000);el('distance').textContent=num(f.d,'m');el('front').textContent=num(f.f,'m');el('request-v').textContent=num(f.request[0],'m/s');el('request-w').textContent=num(f.request[1],'rad/s');el('output-v').textContent=num(f.output[0],'m/s');el('output-w').textContent=num(f.output[1],'rad/s');el('inference').textContent=num(f.ms,'ms');el('state').textContent=labels[f.reason]||f.reason;el('state').classList.toggle('active',f.intervened);}
+function tick(now){if(playing){t=Math.min(duration,t+(now-last)/1000*Number(el('speed').value));draw();if(t>=duration){playing=false;el('play').textContent='再生';}}last=now;requestAnimationFrame(tick);}
+el('play').onclick=()=>{if(t>=duration)t=0;playing=!playing;last=performance.now();el('play').textContent=playing?'一時停止':'再生';draw();};el('seek').oninput=()=>{t=Number(el('seek').value)/1000*duration;draw();};draw();requestAnimationFrame(tick);
+</script></html>

@@ -1,0 +1,41 @@
+{
+  "date_jst": "2026-11-02T08:16:53.782113+09:00",
+  "linux_unit_tests": {
+    "run": 26,
+    "passed": 26
+  },
+  "python_syntax": "passed",
+  "bash_syntax": "passed",
+  "model_load_and_cpu_inference": "passed on synthetic input; no ROS node or publisher",
+  "python": "3.12.3",
+  "torch": "2.14.1+cpu",
+  "numpy": "1.26.4",
+  "rclpy": "7.1.12",
+  "teacher_data": {
+    "rows": 3007,
+    "episodes": 8,
+    "train_rows": 1966,
+    "validation_rows": 1041,
+    "whole_episode_split_verified": true
+  },
+  "saved_trace_files": 11,
+  "saved_trace_json_and_links": "passed",
+  "windows_launcher_selection": "default and explicit WSL names checked without execution; control characters rejected",
+  "new_navigation_trials": 0,
+  "robot_commands_sent": 0,
+  "release_changes": [
+    "Project-local venv selection",
+    "Configurable/default WSL distro",
+    "Windows launcher uses installed Python instead of a private runtime",
+    "Standalone read-only submission checker",
+    "Public README and curated logs"
+  ],
+  "model_sha256": "c4c30ee96bd41768fbd0fb33ee115a28b48adf9681139ebeba45c84b4213e12b",
+  "world_sha256": "bdf365efb813f0a90586868c3202822345fa17cfdc269d8f780d20921e5298e6",
+  "historical_results_are_not_new_trials": true,
+  "limits": [
+    "Fresh-machine dependency installation was not performed.",
+    "Portable launchers were checked without starting a new GUI or driving the robot.",
+    "Published scope is source, model, teacher data and measurements; final PDF/video submission is separate."
+  ]
+}

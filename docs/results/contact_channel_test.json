@@ -1,0 +1,13 @@
+{
+  "purpose": "intentional Gazebo overlap, not an AI navigation trial",
+  "passed": true,
+  "contact_pairs": [
+    [
+      "navbot::base_link::base_collision",
+      "obstacle_a::link::collision"
+    ]
+  ],
+  "contact_samples": 998,
+  "reset_acknowledged": true,
+  "world_sha256": "bdf365efb813f0a90586868c3202822345fa17cfdc269d8f780d20921e5298e6"
+}

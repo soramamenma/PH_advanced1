@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.pt -text
+worlds/navigation.sdf -text whitespace=cr-at-eol
+*.cmd text eol=crlf
+*.vbs text eol=crlf

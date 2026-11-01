@@ -1,0 +1,18 @@
+{
+  "time_utc": "2026-10-31T07:50:14.972649+00:00",
+  "tests_run": 13,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": true,
+  "python": "3.12.3",
+  "ros_distro": "jazzy",
+  "domain": "42",
+  "gz_partition": "pai_navigation",
+  "packages": {
+    "torch": "2.14.1+cpu",
+    "numpy": "1.26.4",
+    "rclpy": "7.1.12"
+  },
+  "gazebo": "Gazebo Sim, version 8.15.0\nCopyright (C) 2018 Open Source Robotics Foundation.\nReleased under the Apache 2.0 License."
+}

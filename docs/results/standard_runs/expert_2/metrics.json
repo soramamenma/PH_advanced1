@@ -1,0 +1,25 @@
+{
+  "mode": "expert",
+  "goal": [
+    3.8,
+    -1.0
+  ],
+  "episode": "20261031_164250_399750_expert_2",
+  "status": "goal_reached",
+  "minimum_lidar_distance_m": 0.7119069695472717,
+  "contact_events": 0,
+  "collision_measurement": "base_link contact sensor only",
+  "world_sha256": "bdf365efb813f0a90586868c3202822345fa17cfdc269d8f780d20921e5298e6",
+  "contact_channel_verified": true,
+  "sim_seconds": 24.95,
+  "final_pose": [
+    3.594124978026751,
+    -1.0714900101556686,
+    0.2782897779904215
+  ],
+  "final_goal_distance_m": 0.21793427042239885,
+  "contact_messages": 0,
+  "intervention_events": 0,
+  "trace": "trace.jsonl",
+  "wall_seconds": 33.98654000299939
+}

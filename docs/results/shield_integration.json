@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "conditions": {
+    "clear_path": {
+      "v": 0.1,
+      "w": 0.0
+    },
+    "stalled_clock_and_sensors": {
+      "output": {
+        "v": 0.0,
+        "w": 0.0
+      },
+      "reason": "stale_or_invalid_data"
+    },
+    "stopped_ai_commands": {
+      "output": {
+        "v": 0.0,
+        "w": 0.0
+      },
+      "reason": "stale_or_invalid_data"
+    },
+    "nan_command": {
+      "output": {
+        "v": 0.0,
+        "w": 0.0
+      },
+      "reason": "invalid_command"
+    },
+    "near_obstacle": {
+      "output": {
+        "v": 0.0,
+        "w": 0.0
+      },
+      "reason": "emergency_stop",
+      "minimum_lidar_distance": 0.38002312183380127
+    }
+  }
+}

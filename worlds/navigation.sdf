@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<sdf version="1.9"><world name="pai_navigation">
+<physics name="physics" type="ignored"><max_step_size>0.005</max_step_size><real_time_factor>1</real_time_factor></physics>
+<plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+<plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+<plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+<plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"><render_engine>ogre2</render_engine></plugin>
+<plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"/>
+<light type="directional" name="sun"><pose>0 0 10 0 0 0</pose><diffuse>.9 .9 .9 1</diffuse><direction>-.5 -.3 -1</direction></light>
+<model name="ground_plane"><static>true</static><link name="link"><collision name="collision"><geometry><plane><normal>0 0 1</normal><size>20 20</size></plane></geometry></collision><visual name="visual"><geometry><plane><normal>0 0 1</normal><size>20 20</size></plane></geometry><material><ambient>.8 .85 .88 1</ambient><diffuse>.8 .85 .88 1</diffuse></material></visual></link></model>
+<model name="wall_north"><static>true</static><pose>0 5 0.5 0 0 0</pose><link name="link">
+    <collision name="collision"><geometry><box><size>10 0.15 1</size></box></geometry></collision>
+    <visual name="visual"><geometry><box><size>10 0.15 1</size></box></geometry><material><ambient>.25 .3 .35 1</ambient><diffuse>.25 .3 .35 1</diffuse></material></visual>
+    </link></model><model name="wall_south"><static>true</static><pose>0 -5 0.5 0 0 0</pose><link name="link">
+    <collision name="collision"><geometry><box><size>10 0.15 1</size></box></geometry></collision>
+    <visual name="visual"><geometry><box><size>10 0.15 1</size></box></geometry><material><ambient>.25 .3 .35 1</ambient><diffuse>.25 .3 .35 1</diffuse></material></visual>
+    </link></model><model name="wall_east"><static>true</static><pose>5 0 0.5 0 0 0</pose><link name="link">
+    <collision name="collision"><geometry><box><size>0.15 10 1</size></box></geometry></collision>
+    <visual name="visual"><geometry><box><size>0.15 10 1</size></box></geometry><material><ambient>.25 .3 .35 1</ambient><diffuse>.25 .3 .35 1</diffuse></material></visual>
+    </link></model><model name="wall_west"><static>true</static><pose>-5 0 0.5 0 0 0</pose><link name="link">
+    <collision name="collision"><geometry><box><size>0.15 10 1</size></box></geometry></collision>
+    <visual name="visual"><geometry><box><size>0.15 10 1</size></box></geometry><material><ambient>.25 .3 .35 1</ambient><diffuse>.25 .3 .35 1</diffuse></material></visual>
+    </link></model><model name="obstacle_a"><static>true</static><pose>1.6 0 0.45 0 0 0</pose><link name="link">
+    <collision name="collision"><geometry><box><size>0.6 1.2 0.9</size></box></geometry></collision>
+    <visual name="visual"><geometry><box><size>0.6 1.2 0.9</size></box></geometry><material><ambient>.9 .35 .15 1</ambient><diffuse>.9 .35 .15 1</diffuse></material></visual>
+    </link></model><model name="obstacle_b"><static>true</static><pose>2.8 1.7 0.45 0 0 0</pose><link name="link">
+    <collision name="collision"><geometry><box><size>0.7 0.7 0.9</size></box></geometry></collision>
+    <visual name="visual"><geometry><box><size>0.7 0.7 0.9</size></box></geometry><material><ambient>.95 .65 .15 1</ambient><diffuse>.95 .65 .15 1</diffuse></material></visual>
+    </link></model>
+<model name="goal"><static>true</static><pose>3.8 0 .01 0 0 0</pose><link name="link"><visual name="visual"><geometry><cylinder><radius>.25</radius><length>.02</length></cylinder></geometry><material><ambient>.1 .8 .3 1</ambient><diffuse>.1 .8 .3 1</diffuse></material></visual></link></model>
+<model name="navbot"><pose>0 0 .005 0 0 0</pose>
+<link name="base_link"><inertial><pose>0 0 .16 0 0 0</pose><mass>2</mass><inertia><ixx>0.022816666666666666</ixx><iyy>0.04406666666666667</iyy><izz>0.06208333333333333</izz></inertia></inertial>
+<visual name="body"><pose>0 0 .16 0 0 0</pose><geometry><box><size>.5 .35 .12</size></box></geometry><material><ambient>.1 .45 .9 1</ambient><diffuse>.1 .45 .9 1</diffuse></material></visual>
+<collision name="base_collision"><pose>0 0 .16 0 0 0</pose><geometry><box><size>.5 .35 .12</size></box></geometry></collision>
+<sensor name="lidar" type="gpu_lidar"><pose>0 0 .32 0 0 0</pose><topic>/nav/scan</topic><gz_frame_id>navbot/lidar_link</gz_frame_id><update_rate>10</update_rate><always_on>true</always_on><visualize>true</visualize><lidar><scan><horizontal><samples>360</samples><resolution>1</resolution><min_angle>-3.141592653589793</min_angle><max_angle>3.141592653589793</max_angle></horizontal></scan><range><min>.05</min><max>8</max><resolution>.01</resolution></range></lidar></sensor>
+<sensor name="body_contacts" type="contact"><always_on>true</always_on><update_rate>20</update_rate><topic>/nav/contacts</topic><contact><collision>base_collision</collision><topic>/nav/contacts</topic></contact></sensor>
+</link>
+<link name="left_wheel"><pose>0 0.205 0.08 0 0 0</pose>
+        <inertial><mass>0.1</mass><inertia><ixx>0.00017333333333333336</ixx><iyy>0.00032</iyy><izz>0.00017333333333333336</izz></inertia></inertial>
+        <visual name="visual"><pose>0 0 0 1.5707963267948966 0 0</pose><geometry><cylinder><radius>0.08</radius><length>0.04</length></cylinder></geometry><material><ambient>0.08 0.08 0.1 1</ambient><diffuse>0.08 0.08 0.1 1</diffuse></material></visual>
+        <collision name="collision"><pose>0 0 0 1.5707963267948966 0 0</pose><geometry><cylinder><radius>0.08</radius><length>0.04</length></cylinder></geometry><surface><friction><ode><mu>1</mu><mu2>1</mu2></ode></friction></surface></collision></link>
+        <joint name="left_wheel_joint" type="revolute"><parent>base_link</parent><child>left_wheel</child><axis><xyz>0 1 0</xyz><limit><lower>-1e16</lower><upper>1e16</upper></limit></axis></joint><link name="right_wheel"><pose>0 -0.205 0.08 0 0 0</pose>
+        <inertial><mass>0.1</mass><inertia><ixx>0.00017333333333333336</ixx><iyy>0.00032</iyy><izz>0.00017333333333333336</izz></inertia></inertial>
+        <visual name="visual"><pose>0 0 0 1.5707963267948966 0 0</pose><geometry><cylinder><radius>0.08</radius><length>0.04</length></cylinder></geometry><material><ambient>0.08 0.08 0.1 1</ambient><diffuse>0.08 0.08 0.1 1</diffuse></material></visual>
+        <collision name="collision"><pose>0 0 0 1.5707963267948966 0 0</pose><geometry><cylinder><radius>0.08</radius><length>0.04</length></cylinder></geometry><surface><friction><ode><mu>1</mu><mu2>1</mu2></ode></friction></surface></collision></link>
+        <joint name="right_wheel_joint" type="revolute"><parent>base_link</parent><child>right_wheel</child><axis><xyz>0 1 0</xyz><limit><lower>-1e16</lower><upper>1e16</upper></limit></axis></joint><link name="front_caster"><pose>0.2 0 0.03 0 0 0</pose>
+        <inertial><mass>0.01</mass><inertia><ixx>0.0000036</ixx><iyy>0.0000036</iyy><izz>0.0000036</izz></inertia></inertial>
+        <collision name="collision"><geometry><sphere><radius>0.03</radius></sphere></geometry><surface><friction><ode><mu>0.001</mu><mu2>0.001</mu2></ode></friction></surface></collision>
+        <visual name="visual"><geometry><sphere><radius>0.03</radius></sphere></geometry></visual></link>
+        <joint name="front_caster_joint" type="ball"><parent>base_link</parent><child>front_caster</child></joint><link name="rear_caster"><pose>-0.2 0 0.03 0 0 0</pose>
+        <inertial><mass>0.01</mass><inertia><ixx>0.0000036</ixx><iyy>0.0000036</iyy><izz>0.0000036</izz></inertia></inertial>
+        <collision name="collision"><geometry><sphere><radius>0.03</radius></sphere></geometry><surface><friction><ode><mu>0.001</mu><mu2>0.001</mu2></ode></friction></surface></collision>
+        <visual name="visual"><geometry><sphere><radius>0.03</radius></sphere></geometry></visual></link>
+        <joint name="rear_caster_joint" type="ball"><parent>base_link</parent><child>rear_caster</child></joint>
+<plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive"><left_joint>left_wheel_joint</left_joint><right_joint>right_wheel_joint</right_joint><wheel_separation>.41</wheel_separation><wheel_radius>.08</wheel_radius><topic>/nav/cmd_vel</topic><odom_topic>/nav/odom</odom_topic><tf_topic>/nav/tf</tf_topic><frame_id>odom</frame_id><child_frame_id>navbot/base_link</child_frame_id><odom_publish_frequency>20</odom_publish_frequency><max_linear_velocity>.2</max_linear_velocity><min_linear_velocity>0</min_linear_velocity><max_angular_velocity>.8</max_angular_velocity><min_angular_velocity>-.8</min_angular_velocity><max_linear_acceleration>.5</max_linear_acceleration><min_linear_acceleration>-.8</min_linear_acceleration></plugin>
+</model></world></sdf>

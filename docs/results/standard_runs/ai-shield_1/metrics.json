@@ -1,0 +1,27 @@
+{
+  "mode": "ai-shield",
+  "goal": [
+    3.8,
+    -1.0
+  ],
+  "episode": "20261031_164250_399750_ai-shield_1",
+  "status": "goal_reached",
+  "minimum_lidar_distance_m": 0.7688537836074829,
+  "contact_events": 0,
+  "collision_measurement": "base_link contact sensor only",
+  "world_sha256": "bdf365efb813f0a90586868c3202822345fa17cfdc269d8f780d20921e5298e6",
+  "model_sha256": "c4c30ee96bd41768fbd0fb33ee115a28b48adf9681139ebeba45c84b4213e12b",
+  "contact_channel_verified": true,
+  "sim_seconds": 26.05,
+  "final_pose": [
+    3.584676547102886,
+    -1.0262599632681086,
+    0.1321072111957711
+  ],
+  "final_goal_distance_m": 0.2169188213096733,
+  "contact_messages": 0,
+  "intervention_events": 0,
+  "intervention_by_reason": {},
+  "trace": "trace.jsonl",
+  "wall_seconds": 34.692341442001634
+}

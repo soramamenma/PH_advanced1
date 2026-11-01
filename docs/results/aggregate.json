@@ -1,0 +1,29 @@
+[
+  {
+    "mode": "expert",
+    "trials": 3,
+    "successes": 3,
+    "mean_sim_seconds": 26.45,
+    "minimum_lidar_distance_m": 0.7119069695472717,
+    "base_contact_events": 0,
+    "interventions": 0
+  },
+  {
+    "mode": "ai",
+    "trials": 3,
+    "successes": 3,
+    "mean_sim_seconds": 26.866666666666664,
+    "minimum_lidar_distance_m": 0.7550807595252991,
+    "base_contact_events": 0,
+    "interventions": 1
+  },
+  {
+    "mode": "ai-shield",
+    "trials": 3,
+    "successes": 3,
+    "mean_sim_seconds": 26.34,
+    "minimum_lidar_distance_m": 0.7469677925109863,
+    "base_contact_events": 0,
+    "interventions": 1
+  }
+]

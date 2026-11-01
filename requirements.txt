@@ -1,0 +1,4 @@
+# Python 3.12; ROS libraries come from Ubuntu/ROS packages.
+# Install PyTorch from the CPU wheel index (see docs/SETUP.md).
+numpy==1.26.4
+torch==2.14.1+cpu
